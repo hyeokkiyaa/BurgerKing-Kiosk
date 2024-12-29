@@ -3,8 +3,11 @@ package kiosk.dto;
 public class Food {
     private String name;
     private int price;
+    private int orderedNumber = 0;
 
-    public Food(int price, String name) {
+
+
+    public Food(String name, int price) {
         this.price = price;
         this.name = name;
     }
@@ -23,5 +26,18 @@ public class Food {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public void incrementOrderedNumber() {
+        orderedNumber++;
+    }
+
+    public void decreaseOrderedNumber() {
+        orderedNumber--;
+    }
+
+    @Override
+    public String toString() {
+        return " - " + name + " " + orderedNumber + "개";
     }
 }
