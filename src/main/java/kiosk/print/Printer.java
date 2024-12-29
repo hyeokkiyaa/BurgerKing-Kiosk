@@ -1,6 +1,7 @@
 package kiosk.print;
 
 import kiosk.dto.Food;
+import kiosk.util.CalculateTotalPrice;
 import kiosk.util.makeFoodInstance;
 
 import java.io.BufferedReader;
@@ -94,16 +95,25 @@ public class Printer {
     }
 
     public static void foodListShoppingCartPrint(ArrayList<Food> foodList) throws IOException {
+        foodListIterativePrint(foodList);
+        System.out.println("====================\n1. 주문하기\n2. 수량 조절하기\n3. 삭제하기\n");
+        System.out.println("총 가격: " + CalculateTotalPrice.calculateTotalFoodPrice(foodList) + "원\n");
+        System.out.print("메뉴선텍 (0을 선택 시 홈으로): ");
+        BufferedReader getMenuValue = new BufferedReader(new InputStreamReader(System.in));
+        int choiceFromListByUser = Integer.parseInt(getMenuValue.readLine());
+        if (choiceFromListByUser == 0 || choiceFromListByUser == 1)  {
+            return;
+        }
+    }
+
+    private static void foodListIterativePrint(ArrayList<Food> foodList) throws IOException {
         if (foodList.isEmpty()){
             System.out.println("No food in the shopping cart");
             return;
         }
         StringBuilder shoppingCartList = new StringBuilder("\n===== 장바구니 =====\n\n");
-        int index = 1;
         for (Food food : foodList) {
-            shoppingCartList.append(index).append(". ");
             shoppingCartList.append(food.toString()).append("\n");
-            index++;
         }
         System.out.println(shoppingCartList);
     }

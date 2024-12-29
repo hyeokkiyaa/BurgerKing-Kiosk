@@ -23,11 +23,9 @@ public class Application {
                 break;
             else if (menuHomeSelectedNumber >=  1 & menuHomeSelectedNumber <= 3){
                 foodAddedList = afterSelectedMenuOptionOfFoodAdd(menuHomeSelectedNumber, foodAddedList);
-
             }
             else {
                 printCart(foodAddedList);
-
             }
 
 

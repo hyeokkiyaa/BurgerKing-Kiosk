@@ -36,6 +36,14 @@ public class Food {
         orderedNumber--;
     }
 
+    public int getOrderedNumber() {
+        return orderedNumber;
+    }
+
+    public void setOrderedNumber(int orderedNumber) {
+        this.orderedNumber = orderedNumber;
+    }
+
     @Override
     public String toString() {
         return " - " + name + " " + orderedNumber + "개";
