@@ -21,14 +21,11 @@ public class Application {
 
             if (menuHomeSelectedNumber == 5)
                 break;
-            else if (menuHomeSelectedNumber >=  1 & menuHomeSelectedNumber <= 3){
+            else if (menuHomeSelectedNumber >= 1 & menuHomeSelectedNumber <= 3) {
                 foodAddedList = afterSelectedMenuOptionOfFoodAdd(menuHomeSelectedNumber, foodAddedList);
-            }
-            else {
+            } else {
                 printCart(foodAddedList);
             }
-
-
         }
     }
 

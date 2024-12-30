@@ -2,6 +2,7 @@ package kiosk.print;
 
 import kiosk.dto.Food;
 import kiosk.util.CalculateTotalPrice;
+import kiosk.util.ModifyFood;
 import kiosk.util.makeFoodInstance;
 
 import java.io.BufferedReader;
@@ -95,7 +96,8 @@ public class Printer {
     }
 
     public static void foodListShoppingCartPrint(ArrayList<Food> foodList) throws IOException {
-        foodListIterativePrint(foodList);
+        System.out.println("\n===== 장바구니 =====\n\n");
+        foodListIterativePrint(foodList, 0);
         System.out.println("====================\n1. 주문하기\n2. 수량 조절하기\n3. 삭제하기\n");
         System.out.println("총 가격: " + CalculateTotalPrice.calculateTotalFoodPrice(foodList) + "원\n");
         System.out.print("메뉴선텍 (0을 선택 시 홈으로): ");
@@ -103,17 +105,82 @@ public class Printer {
         int choiceFromListByUser = Integer.parseInt(getMenuValue.readLine());
         if (choiceFromListByUser == 0 || choiceFromListByUser == 1)  {
             return;
+        } else if (choiceFromListByUser == 2) {
+            controlNumberOfFood(foodList);
+        } else if (choiceFromListByUser == 3) {
+            deleteNumberOfFood(foodList);
         }
     }
 
-    private static void foodListIterativePrint(ArrayList<Food> foodList) throws IOException {
+    private static void controlNumberOfFood(ArrayList<Food> foodList) throws IOException {
+        System.out.println("\n===== 수량 조절하기 =====\n");
+        System.out.println("현재 장바구니\n");
+        foodListIterativePrint(foodList, 1);
+        System.out.print("\n수량을 조절할 메뉴 번호를 선택하세요 (0을 선택 시 홈으로): ");
+        BufferedReader getInputNumber = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            int choiceFromMenuListByUser = Integer.parseInt(getInputNumber.readLine());
+            if (choiceFromMenuListByUser < 0 || choiceFromMenuListByUser > foodList.size())  {
+                throw new IllegalArgumentException();
+            }
+            if (choiceFromMenuListByUser == 0) {
+                return;
+            }
+            System.out.print("//번호 선택 후\n변경할 수량을 입력하세요: ");
+            int number2ChangeNumberOfFood = Integer.parseInt(getInputNumber.readLine());
+            if (number2ChangeNumberOfFood < 1 || number2ChangeNumberOfFood > 50)  {
+                throw new IllegalArgumentException();
+            }
+            ModifyFood.changeNumberOfFood(foodList, choiceFromMenuListByUser - 1, number2ChangeNumberOfFood);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private static void deleteNumberOfFood(ArrayList<Food> foodList) throws IOException {
+        System.out.println("\n===== 삭제하기 =====\n");
+        System.out.println("현재 장바구니\n");
+        foodListIterativePrint(foodList, 1);
+        System.out.print("\n삭제할 메뉴 번호를 선택하세요 (0을 선택 시 홈으로): ");
+        BufferedReader getInputNumber = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            int choiceFromMenuListByUser = Integer.parseInt(getInputNumber.readLine());
+            if (choiceFromMenuListByUser < 0 || choiceFromMenuListByUser > foodList.size())  {
+                throw new IllegalArgumentException();
+            }
+            if (choiceFromMenuListByUser == 0) {
+                return;
+            }
+            System.out.print("정말 삭제 하시겠습니까? (0: 취소 및 홈으로 1: 삭제): ");
+            int deleteOrNot = Integer.parseInt(getInputNumber.readLine());
+            if (deleteOrNot == 0)  {
+                return;
+            } else if (deleteOrNot == 1)  {
+                ModifyFood.deleteFoodFromList(foodList, choiceFromMenuListByUser);
+            } else {
+                throw new IllegalArgumentException();
+            }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private static void foodListIterativePrint(ArrayList<Food> foodList, int withNumberOrNot) throws IOException {
         if (foodList.isEmpty()){
             System.out.println("No food in the shopping cart");
             return;
         }
-        StringBuilder shoppingCartList = new StringBuilder("\n===== 장바구니 =====\n\n");
-        for (Food food : foodList) {
-            shoppingCartList.append(food.toString()).append("\n");
+        StringBuilder shoppingCartList = new StringBuilder();
+        if ( withNumberOrNot == 0) {
+            for (Food food : foodList) {
+                shoppingCartList.append(" - ").append(food.toString()).append("\n");
+            }
+        } else {
+            int index = 1;
+            for (Food food : foodList) {
+                shoppingCartList.append(index).append(". ").append(food.toString()).append("\n");
+                index++;
+            }
         }
         System.out.println(shoppingCartList);
     }

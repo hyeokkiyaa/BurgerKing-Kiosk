@@ -46,6 +46,6 @@ public class Food {
 
     @Override
     public String toString() {
-        return " - " + name + " " + orderedNumber + "개";
+        return name + " " + orderedNumber + "개";
     }
 }
